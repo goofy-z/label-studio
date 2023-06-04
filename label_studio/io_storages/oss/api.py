@@ -63,6 +63,8 @@ class OSSImportStorageListAPI(ImportStorageListAPI):
             serializer.validated_data["oss_access_key_id"] = settings.MLFLOW_OSS_KEY_ID
         if not serializer.validated_data.get("oss_secret_access_key"):
             serializer.validated_data["oss_secret_access_key"] = settings.MLFLOW_OSS_KEY_SECRET
+        if not serializer.validated_data.get("prefix").endswith("/"):
+            serializer.validated_data["prefix"] += "/"
         OSSImportStorage.objects.create(**serializer.validated_data)
 
 
@@ -93,6 +95,12 @@ class OSSImportStorageListAPI(ImportStorageListAPI):
 class OSSImportStorageDetailAPI(ImportStorageDetailAPI):
     queryset = OSSImportStorage.objects.all()
     serializer_class = OSSImportStorageSerializer
+    
+    def perform_update(self, serializer):
+        obj = serializer.save()
+        if not serializer.validated_data.get("prefix").endswith("/"):
+            obj.prefix += "/"
+            obj.save(update_fields=["prefix"])
 
 
 @method_decorator(
@@ -168,6 +176,8 @@ class OSSExportStorageListAPI(ExportStorageListAPI):
             serializer.validated_data["oss_access_key_id"] = settings.MLFLOW_OSS_KEY_ID
         if not serializer.validated_data.get("oss_secret_access_key"):
             serializer.validated_data["oss_secret_access_key"] = settings.MLFLOW_OSS_KEY_SECRET
+        if not serializer.validated_data.get("prefix").endswith("/"):
+            serializer.validated_data["prefix"] += "/"
         OSSExportStorage.objects.create(**serializer.validated_data)
 
 
@@ -198,6 +208,12 @@ class OSSExportStorageListAPI(ExportStorageListAPI):
 class OSSExportStorageDetailAPI(ExportStorageDetailAPI):
     queryset = OSSExportStorage.objects.all()
     serializer_class = OSSExportStorageSerializer
+    
+    def perform_update(self, serializer):
+        obj = serializer.save()
+        if not serializer.validated_data.get("prefix").endswith("/"):
+            obj.prefix += "/"
+            obj.save(update_fields=["prefix"])
 
 
 @method_decorator(

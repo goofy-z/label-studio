@@ -30,7 +30,7 @@ const initializeDataManager = async (root, props, params) => {
   let toolbarStr = ""
   // 不同权限，看到按钮不一致
   if (params.manager == true){
-    toolbarStr = "actions columns filters ordering owner-button label-button | import-button export-button refresh view-toggle"
+    toolbarStr = "actions columns filters ordering owner-button label-button | export-button refresh view-toggle"
   } else {
     toolbarStr = "columns label-button | refresh view-toggle"
   }

@@ -49,4 +49,40 @@
 
 #### 
 #### 接口权限改造
-基于django的auth扩展，在对应API中指定路由使用的权限，通过统一的权限校验
+1. 用户权限绑定
+权限控制使用的django的auth扩展，[具体可以参考官方文档](https://docs.djangoproject.com/zh-hans/2.1/_modules/django/contrib/auth/)，简而言之就是基于角色的账号权限控制，`User`先绑定`Group`,`Group`再绑定每一个业务权限Code，对应的表如下:
+
+| **表名**           | **描述** |
+| ------------------ | -------------- | 
+| auth_group       | 权限组，理解为角色            | 
+| auth_group_permissions       | 权限组关联权限code            | 
+| auth_permissions       | 权限表            | 
+| user_group       | 用户表，当前项目user表被重命名为htx_user            |
+
+同时平台初始化时需要初始化权限表和权限组以及前两者的关联表，这部分sql在`deploy/init/init_dml.sql`
+
+2. 统一权限控制钩子
+基于django的auth扩展，在对应API中指定路由使用的权限，通过统一的权限校验类`HasObjectPermission`, 这是通过drf里的配置`DEFAULT_PERMISSION_CLASSES`设置的，代码可以参考`core/api_permissions.py`。
+
+#### 前端权限改造
+1. 基于现在的前端渲染模式，用户的信息都是通过django模板渲染的，我们在`template/base.py`里将用户权限也一并返回, 在APP_SETTINGS里添加权限，调用的是用户的`get_all_permissions`方法
+```
+window.APP_SETTINGS = Object.assign({
+  user: {
+      ...
+      permissions: "{{user.get_all_permissions}}",
+      ...
+    },
+})
+```
+在react项目中可以使用如下方式来校验权限, 例如下面检查的是`projects.change`权限
+```
+import { useConfig } from '../providers/ConfigProvider';
+  ...
+  const config = useConfig()
+  config.user.permissions.search("projects.change") > 0
+  ...
+```
+
+2. 平台的标注数据管理组件的代码并不在当前项目里，而是该组织下的[另一个项目dm2](https://github.com/heartexlabs/dm2)，幸运的是这个组件是支持自定义按钮，详细可查看[调研文档](https://alidocs.dingtalk.com/i/nodes/Gl6Pm2Db8D3xp52rC6DgGbw1JxLq0Ee4?utm_scene=person_space)
+

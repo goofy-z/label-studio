@@ -104,7 +104,7 @@ DATABASES_ALL[DJANGO_DB_MYSQL] = {
     'ENGINE': 'django.db.backends.mysql',
     'USER': MLFLOW_APOLLO_CONFIG_DICT.get('labelhub.mysql.username', 'root'),
     'PASSWORD': MLFLOW_APOLLO_CONFIG_DICT.get('labelhub.mysql.password', '111111'),
-    'NAME': MLFLOW_APOLLO_CONFIG_DICT.get('labelhub.mysql.database', 'labelhub'),
+    'NAME': MLFLOW_APOLLO_CONFIG_DICT.get('labelhub.mysql.database', 'label_studio2'),
     'HOST': MLFLOW_APOLLO_CONFIG_DICT.get('labelhub.mysql.host', '127.0.0.1'),
     'PORT': MLFLOW_APOLLO_CONFIG_DICT.get('labelhub.mysql.port', '3306'),
 }
@@ -116,8 +116,8 @@ BOSS_PERMISSION_CODE = get_env('BOSS_PERMISSION_CODE', '')
 # Boss配置
 OAUTH_APP_CONFIG = {
     'boss': {
-        'client_id': get_env('CLIENT_SECRET', 'label_studio'),
-        'client_secret': get_env('CLIENT_SECRET', 'label_studio'),
+        'client_id': get_env('CLIENT_SECRET', 'labelhub'),
+        'client_secret': get_env('CLIENT_SECRET', 'labelhub'),
         'access_token_url': get_env('BOSS_PERMISSION_CODE', 'https://dev8.xtrfr.cn/oauth/token'),
         'authorize_url': get_env('AUTHORIZE_URL', 'https://dev8.xtrfr.cn/oauth/authorize'),
         'api_base_url': get_env('API_BASE_URL', 'https://dev8.xtrfr.cn/oauth'),

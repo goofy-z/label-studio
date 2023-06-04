@@ -9,10 +9,6 @@ from users.serializers import UserSimpleSerializer
 from constants import SAFE_HTML_ATTRIBUTES, SAFE_HTML_TAGS
 
 from projects.models import Project, ProjectOnboarding, ProjectSummary, ProjectMember
-<<<<<<< HEAD
-
-=======
->>>>>>> f7212943 (初始化)
 
 
 class CreatedByFromContext:

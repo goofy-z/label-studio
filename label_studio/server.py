@@ -288,7 +288,7 @@ def main():
         os.environ.setdefault('HOST', host)  # it will be passed to settings.HOSTNAME as env var
 
     _setup_env()
-    _apply_database_migrations()
+    #_apply_database_migrations()
 
     from label_studio.core.utils.common import collect_versions
     versions = collect_versions()

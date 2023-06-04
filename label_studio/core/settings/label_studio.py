@@ -87,6 +87,7 @@ APOLLO_NAMESPACE = "mlflow"
 MLFLOW_APOLLO_CONFIG_DICT = ApolloBaseConfig().get_apollo_configs(
     app=APOLLO_APPLICATION, namespace=APOLLO_NAMESPACE
 )
+#MLFLOW_APOLLO_CONFIG_DICT = {}
 
 # OSS config
 MLFLOW_OSS_ENDPOINT_URL = MLFLOW_APOLLO_CONFIG_DICT.get("mlflow.oss.attaAiModel.ro.endPoint", "")
@@ -101,11 +102,11 @@ if MLFLOW_OSS_BUCKET_NAME.startswith("oss://"):
 
 DATABASES_ALL[DJANGO_DB_MYSQL] = {
     'ENGINE': 'django.db.backends.mysql',
-    'USER': MLFLOW_APOLLO_CONFIG_DICT.get('label_studio.mysql.username', 'root'),
-    'PASSWORD': MLFLOW_APOLLO_CONFIG_DICT.get('label_studio.mysql.password', '111111'),
-    'NAME': MLFLOW_APOLLO_CONFIG_DICT.get('label_studio.mysql.database', 'label_studio2'),
-    'HOST': MLFLOW_APOLLO_CONFIG_DICT.get('label_studio.mysql.host', '127.0.0.1'),
-    'PORT': MLFLOW_APOLLO_CONFIG_DICT.get('label_studio.mysql.port', '3306'),
+    'USER': MLFLOW_APOLLO_CONFIG_DICT.get('labelhub.mysql.username', 'root'),
+    'PASSWORD': MLFLOW_APOLLO_CONFIG_DICT.get('labelhub.mysql.password', '111111'),
+    'NAME': MLFLOW_APOLLO_CONFIG_DICT.get('labelhub.mysql.database', 'labelhub'),
+    'HOST': MLFLOW_APOLLO_CONFIG_DICT.get('labelhub.mysql.host', '127.0.0.1'),
+    'PORT': MLFLOW_APOLLO_CONFIG_DICT.get('labelhub.mysql.port', '3306'),
 }
 
 DATABASES = {'default': DATABASES_ALL[DJANGO_DB]}

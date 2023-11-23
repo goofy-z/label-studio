@@ -1,6 +1,6 @@
 {
-  "message": "fix: DEV-3917: Revert #1043 (#1088)",
-  "commit": "63855c94bb9df6529781ee84254dad825f3f3db6",
-  "branch": "ls-release/1.7.0",
-  "date": "2022/12/15 08:30:21"
+  "message": "fix: LEAP-256: Include the 'legacy' property in the 'Taxonomy' tag",
+  "commit": "ce5217c8f2b7ba4dda598cec3cf447d37f2536ef",
+  "branch": "master",
+  "date": "2023/10/19 20:38:16"
 }

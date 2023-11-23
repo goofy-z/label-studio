@@ -1,4 +1,5 @@
 import React, { Fragment, useCallback, useMemo, useState } from 'react';
+import sanitizeHtml from 'sanitize-html';
 import { LsSlack } from '../../assets/icons';
 import { Block, Elem } from '../../utils/bem';
 import { absoluteURL, copyText } from '../../utils/helpers';
@@ -6,7 +7,7 @@ import { Button } from '../Button/Button';
 import { Space } from '../Space/Space';
 import "./Error.styl";
 
-const SLACK_INVITE_URL = "https://slack.labelstudio.heartex.com/?source=product-error-msg";
+const SLACK_INVITE_URL = "https://slack.labelstud.io/?source=product-error-msg";
 
 export const ErrorWrapper = ({title, message, errorId, stacktrace, validation, version, onGoBack, onReload, possum = false}) => {
   const preparedStackTrace = useMemo(() => {
@@ -37,13 +38,15 @@ export const ErrorWrapper = ({title, message, errorId, stacktrace, validation, v
         <Elem name="title">{title}</Elem>
       )}
 
-      {message && <Elem name="detail"dangerouslySetInnerHTML={{
-        __html: String(message),
-      }}/>}
+      {message && (
+        <Elem name="detail" dangerouslySetInnerHTML={{
+          __html: sanitizeHtml(String(message)),
+        }}/>
+      )}
 
       {preparedStackTrace && (
         <Elem name="stracktrace" dangerouslySetInnerHTML={{
-          __html: preparedStackTrace.replace(/(\n)/g, '<br>'),
+          __html: sanitizeHtml(preparedStackTrace.replace(/(\n)/g, '<br>')),
         }}/>
       )}
 
@@ -57,7 +60,7 @@ export const ErrorWrapper = ({title, message, errorId, stacktrace, validation, v
                   tag="li"
                   key={i}
                   name="message"
-                  dangerouslySetInnerHTML={{__html: err}}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(err) }}
                 />
               ))}
             </Fragment>

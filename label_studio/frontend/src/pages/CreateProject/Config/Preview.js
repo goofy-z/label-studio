@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Spinner } from '../../../components';
 import { useLibrary } from '../../../providers/LibraryProvider';
 import { cn } from '../../../utils/bem';
+import { FF_DEV_3617, isFF } from '../../../utils/feature-flags';
 import './Config.styl';
 import { EMPTY_CONFIG } from './Template';
 
@@ -36,14 +37,24 @@ export const Preview = ({ config, data, error, loading }) => {
       return new window.LabelStudio(rootRef.current, {
         config,
         task,
-        interfaces: ["side-column"],
-        onLabelStudioLoad(LS) {
+        interfaces: ["side-column", "annotations:comments"],
+        // with SharedStore we should use more late event
+        [isFF(FF_DEV_3617) ? 'onStorageInitialized' : 'onLabelStudioLoad'](LS) {
           LS.settings.bottomSidePanel = true;
 
-          const as = LS.annotationStore;
-          const c = as.createAnnotation();
+          const initAnnotation = () => {
+            const as = LS.annotationStore;
+            const c = as.createAnnotation();
 
-          as.selectAnnotation(c.id);
+            as.selectAnnotation(c.id);
+          };
+
+          if (isFF(FF_DEV_3617)) {
+            // and even then we need to wait a little even after the store is initialized
+            setTimeout(initAnnotation);
+          } else {
+            initAnnotation();
+          }
         },
       });
     } catch (err) {
@@ -112,7 +123,7 @@ export const Preview = ({ config, data, error, loading }) => {
         </div>
       )}
       {!data && loading && <Spinner style={{ width: "100%", height: "50vh" }} />}
-      <div id="label-studio" ref={rootRef}></div>
+      <div id="label-studio" className={configClass.elem("preview-ui")} ref={rootRef}></div>
     </div>
   );
 };
